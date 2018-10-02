@@ -37,6 +37,7 @@ dt[,c('p2','p3','p4','p5','p6', 'employer','meta_footer','meta_header','scrape_d
 setnames(dt,'p1','company')
 setcolorder(dt,c('company','title','powerbi','qlik','tableau','description'))
 
+dt_all <- dt
 dt <- dt[powerbi + qlik + tableau > 0]
 dt_g1 <- dt[,lapply(.SD,sum), .SDcols=c('powerbi','qlik','tableau')]
 dt_g1 <- dt_g1[,lapply(.SD,function(x) { x / nrow(dt) * 100})]
@@ -50,3 +51,5 @@ g1 <- ggplot(dt_g1,aes(x=variable,y=value, fill=variable)) +
 g1
 ggsave('1.png',g1,width=48.8,height=27.4, units='cm')
 rm(g1, dt_g1)
+
+write.csv(dt,'vis_jobs.csv')
